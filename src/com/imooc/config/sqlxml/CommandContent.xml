@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imooc.dao.ICommandContent">
+	<resultMap type="com.imooc.bean.Command_Content" id="CommandContentResult">
+		<id column="ID" jdbcType="INTEGER" property="id"/>
+		<result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+		<result column="COMMAND_ID" jdbcType="INTEGER" property="command_id"/>
+		<association property="command" resultMap="com.imooc.dao.ICommand.CommandResult"/>
+	</resultMap>
+	
+	<select id="count" parameterType="com.imooc.bean.Command" resultType="int">
+		select count(*) from COMMAND a, COMMAND_CONTENT b
+		<where>
+			a.ID = b.COMMAND_ID
+			<if test="name != null and !&quot;&quot;.equals(name.trim())">
+				and a.NAME = #{name}
+			</if>
+			<if test="description != null and !&quot;&quot;.equals(description.trim())">
+				and a.DESCRIPTION like '%' #{description} '%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryContentList" parameterType="java.util.Map" resultMap="CommandContentResult">
+		select a.ID,a.CONTENT,a.COMMAND_ID, b.ID C_ID,b.NAME,b.DESCRIPTION
+		from COMMAND_CONTENT a left join COMMAND b
+		on a.COMMAND_ID = b.ID
+		<where>
+			<if test="command.name != null and !&quot;&quot;.equals(command.name.trim())">
+				and b.NAME = #{command.name}
+			</if>
+			<if test="command.description != null and !&quot;&quot;.equals(command.description.trim())">
+				and b.DESCRIPTION like '%' #{command.description} '%'
+			</if>
+		</where>
+		order by a.ID limit #{page.dbIndex},#{page.dbNumber}
+	</select>
+	
+	<select id="queryContentListByPage" parameterType="java.util.Map" resultMap="CommandContentResult">
+		select a.ID,a.CONTENT,a.COMMAND_ID, b.ID C_ID,b.NAME,b.DESCRIPTION
+		from COMMAND_CONTENT a left join COMMAND b
+		on a.COMMAND_ID = b.ID
+		<where>
+			<if test="command.name != null and !&quot;&quot;.equals(command.name.trim())">
+				and b.NAME = #{command.name}
+			</if>
+			<if test="command.description != null and !&quot;&quot;.equals(command.description.trim())">
+				and b.DESCRIPTION like '%' #{command.description} '%'
+			</if>
+		</where>
+		order by a.ID
+	</select>
+</mapper>

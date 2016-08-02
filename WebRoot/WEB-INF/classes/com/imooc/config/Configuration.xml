@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 
+	<settings> 
+		<setting name="useGeneratedKeys" value="false"/> 
+		<setting name="useColumnLabel" value="true"/> 
+	</settings>
+	 -->
+	 
+	<!-- 设置别名 -->
+	<!-- <typeAliases>
+		<typeAlias alias="UserAlias"
+			type="org.apache.ibatis.submitted.complex_property.User" />
+	</typeAliases> -->
+
+	<plugins>
+		<plugin interceptor="com.imooc.interceptor.PageInterceptor" />
+	</plugins>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC">
+				<property name="" value="" />
+			</transactionManager>
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url"
+					value="jdbc:mysql://localhost:3306/MyBatisLearning?useUnicode=true&amp;characterEncoding=UTF-8" />
+				<property name="username" value="root" />
+				<property name="password" value="root" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<mapper resource="com/imooc/config/sqlxml/Message.xml" />
+		<mapper resource="com/imooc/config/sqlxml/Command.xml" />
+		<mapper resource="com/imooc/config/sqlxml/CommandContent.xml" />
+	</mappers>
+
+</configuration>
